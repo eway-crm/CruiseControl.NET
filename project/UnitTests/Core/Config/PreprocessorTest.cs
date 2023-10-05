@@ -13,7 +13,7 @@ namespace ThoughtWorks.CruiseControl.UnitTests.Core.Config
     [TestFixture]
     public class PreprocessorTest
     {
-    	private static readonly string FAKE_ROOT = Path.DirectorySeparatorChar == '\\' ? "c:\\temp folder\\" : "/tmp/";
+    	private static readonly string FAKE_ROOT = Platform.IsWindows ? "c:\\temp folder\\" : "/tmp/";
 
         private readonly XmlUrlResolver _resolver = new XmlUrlResolver();
 
@@ -42,6 +42,7 @@ namespace ThoughtWorks.CruiseControl.UnitTests.Core.Config
         }
 
         [Test]
+        [Platform(Exclude = "Mono", Reason = "JScript not available")]
         public void TestBigFor()
         {
             XmlDocument doc = _Preprocess("TestBigFor.xml");
@@ -78,6 +79,7 @@ namespace ThoughtWorks.CruiseControl.UnitTests.Core.Config
         }
 
         [Test]
+        [Platform(Exclude = "Mono", Reason = "computername is unknown in mono, maybe fix the test file?")]
         public void TestEnvironmentVariableExpansion()
         {
             var doc = _Preprocess("TestEnvironmentVariableExpansion.xml");
@@ -89,6 +91,7 @@ namespace ThoughtWorks.CruiseControl.UnitTests.Core.Config
         }
 
         [Test]
+        [Platform(Exclude = "Mono", Reason = "JScript not available")]
         public void TestEvals()
         {
             XmlDocument doc = _Preprocess("TestEval.xml");
@@ -133,6 +136,7 @@ namespace ThoughtWorks.CruiseControl.UnitTests.Core.Config
         }
 
         [Test]
+        [Platform(Exclude = "Mono", Reason = "JScript not available")]
         public void TestFor()
         {
             XmlDocument doc = _Preprocess("TestFor.xml");
@@ -143,6 +147,7 @@ namespace ThoughtWorks.CruiseControl.UnitTests.Core.Config
         }
 
         [Test]
+        [Platform(Exclude = "Mono", Reason = "JScript not available")]
         public void TestForEach()
         {
             XmlDocument doc = _Preprocess("TestForEach.xml");
@@ -156,6 +161,7 @@ namespace ThoughtWorks.CruiseControl.UnitTests.Core.Config
         }
 
         [Test]
+        [Platform(Exclude = "Mono", Reason = "JScript not available")]
         public void TestIf()
         {
             XmlDocument doc = _Preprocess("TestIf.xml");
@@ -406,12 +412,14 @@ namespace ThoughtWorks.CruiseControl.UnitTests.Core.Config
         }
 
         [Test]
+        [Platform(Exclude = "Mono", Reason = "path is unknown")]
         public void TestSample()
         {            
             _Preprocess( "Sample.xml" );            
         }
 
         [Test]
+        [Platform(Exclude = "Mono", Reason = "computername is unknown")]
         public void TestSampleProject()
         {            
             _Preprocess( "SampleProject.xml" );
@@ -460,7 +468,7 @@ namespace ThoughtWorks.CruiseControl.UnitTests.Core.Config
 
                 Assert.AreEqual(env.Fileset.Length, 3);
                 Assert.AreEqual(GetTestPath("TestIncludeVariable.xml"), env.Fileset[0].LocalPath);
-                Assert.AreEqual(GetTestPath(@"Subfolder\TestIncluded.xml"), env.Fileset[1].LocalPath);
+                Assert.AreEqual(GetTestPath(String.Format( "Subfolder{0}TestIncluded.xml", Path.DirectorySeparatorChar )), env.Fileset[1].LocalPath);
                 Assert.AreEqual(GetTestPath("TestIncluded2.xml"), env.Fileset[2].LocalPath);
             }
         }
@@ -550,7 +558,7 @@ namespace ThoughtWorks.CruiseControl.UnitTests.Core.Config
 			System.IO.Stream result = Assembly.GetExecutingAssembly().
 				GetManifestResourceStream(
 				"ThoughtWorks.CruiseControl.UnitTests.Core.Config.TestAssets." +
-				filename);
+				filename.Replace("/", "."));
             if (assertResourceFound)
             {
                 Assert.IsNotNull(result, "Unable to load data from assembly : " + filename);

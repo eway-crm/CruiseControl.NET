@@ -15,7 +15,8 @@ Releases up to 1.8.5 can be downloaded from [sourceforge.net](https://sourceforg
 ## Windows
 1. Visual Studio 2019 or Visual Studio 2017 + Visual Studio 2019 Build Tools
 2. Sandcastle Help Builder
-3. Visual Studio Code with NSIS extension (from idleberg)
+3. NSIS 3.05
+4. Visual Studio Code with NSIS extension (from idleberg)
 
 ## Linux
 1. MonoDevelop or Rider from Jetbrains
@@ -54,6 +55,10 @@ The packaged distribution can be found in the "Publish" folder.
 
 This builds and packages the project WebDashboards.
 
+7. ```ps build.ps1 --target=clean```
+
+This cleans the Build, Dist and Publish folders of previous artifacts.
+
 If running powershell scripts are disabled on your machine, you can run powershell with ExecutionPolicy disabled for the CruiseControl.NET build file:
 
 ```powershell -ExecutionPolicy ByPass -File ./build.ps1 -target=build```
@@ -79,13 +84,9 @@ Cleanup -> Init -> Build -> Unit Tests -> code Analysis -> Packaging
 This will call only the runUnitTests target in ccnet.build script.
 Cleanup -> Init -> Build -> Unit Tests
 
-5. ```./build.sh --target=package```
+7. ```./build.sh --target=clean```
 
-This only build and package the CruiseControl.NET distribution.
-Cleanup -> Init -> Build -> Packaging
+This cleans the Build, Dist and Publish folders of previous artifacts.
 
-The packaged distribution can be found in the "Publish" folder.
 
-6. ```./build.sh --target=web-packages```
-
-This builds and packages the project WebDashboards.
+**_Building CruiseControl.NET installers and documentation is currently unavailable on linux since it requires NSIS and Sandcastle Help Builder.

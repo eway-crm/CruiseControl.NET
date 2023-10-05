@@ -2,6 +2,7 @@ using System.Collections;
 using System.Configuration;
 using System.Text;
 using System.Xml.XPath;
+using ThoughtWorks.CruiseControl.Core.Config;
 using ThoughtWorks.CruiseControl.Core.Util;
 
 namespace ThoughtWorks.CruiseControl.Core.Publishers
@@ -20,8 +21,11 @@ namespace ThoughtWorks.CruiseControl.Core.Publishers
 		/// <returns></returns>
 		public string TransformResultsWithAllStyleSheets(XPathDocument document)
 		{
-			IList list = (IList) ConfigurationManager.GetSection("xslFiles");
-			return TransformResults(list, document);
+			var section = ConfigurationManager.GetSection("xslFiles") as XslFilesSectionHandler;
+            if (section == null)
+                section = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).GetSection("xslFiles") as XslFilesSectionHandler;
+            
+			return TransformResults(section?.FileNames, document);
 		}
 
         /// <summary>
