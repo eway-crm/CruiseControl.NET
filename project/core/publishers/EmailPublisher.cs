@@ -429,13 +429,15 @@ namespace ThoughtWorks.CruiseControl.Core.Publishers
             result.BuildProgressInformation.SignalStartRunTask(!string.IsNullOrEmpty(Description) ? Description : "Emailing ...");
 
             EmailMessage emailMessage = new EmailMessage(result, this);
-            string to = emailMessage.Recipients;
             string subject = emailMessage.Subject;
-            string message = CreateMessage(result);
-            if (IsRecipientSpecified(to))
+            foreach (string to in emailMessage.Recipients)
             {
-                Log.Info(string.Format(System.Globalization.CultureInfo.CurrentCulture,"Emailing \"{0}\" to {1}", subject, to));
-                SendMessage(fromAddress, to, replytoAddress, subject, message, result.WorkingDirectory);
+                string message = CreateMessage(result);
+                if (IsRecipientSpecified(to))
+                {
+                    Log.Info(string.Format(System.Globalization.CultureInfo.CurrentCulture, "Emailing \"{0}\" to {1}", subject, to));
+                    SendMessage(fromAddress, to, replytoAddress, subject, message, result.WorkingDirectory);
+                }
             }
 
             return true;

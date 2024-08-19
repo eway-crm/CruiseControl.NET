@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ThoughtWorks.CruiseControl.Remote;
 
@@ -76,7 +78,7 @@ namespace ThoughtWorks.CruiseControl.Core.Publishers
         /// Determine the recipients list for the email.
         /// </summary>
         /// <remarks>Note: This can be a mildly-heavyweight property to read.</remarks>
-        public string Recipients
+        public IEnumerable<string> Recipients
         {
             get
             {
@@ -150,14 +152,7 @@ namespace ThoughtWorks.CruiseControl.Core.Publishers
                     }
                 }
 
-                StringBuilder buffer = new StringBuilder();
-                foreach (string key in recipients.Keys)
-                {
-                    if (buffer.Length > 0)
-                        buffer.Append(", ");
-                    buffer.Append(key);
-                }
-                return buffer.ToString();
+                return recipients.Keys.OfType<string>();
             }
         }
 
