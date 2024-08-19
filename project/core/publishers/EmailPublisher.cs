@@ -469,7 +469,7 @@ namespace ThoughtWorks.CruiseControl.Core.Publishers
             }
             catch (Exception e)
             {
-                throw new CruiseControlException("EmailPublisher exception: " + e, e);
+                throw new CruiseControlException($"EmailPublisher for recipients '{to}' failed exception: " + e, e);
             }
         }
 
