@@ -50,7 +50,7 @@ namespace ThoughtWorks.CruiseControl.Console
 				return 1;
 			}
         	
-        	if(consoleArgs.ShowHelp)
+        	if (consoleArgs.ShowHelp)
         	{
         		DisplayHelp(opts);
         		return 0;

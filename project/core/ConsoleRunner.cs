@@ -119,7 +119,11 @@ namespace ThoughtWorks.CruiseControl.Core
 
 		private void HandleControlEvent(object sender, EventArgs args)
 		{
-			server.Dispose();
+            Console.WriteLine("Stopping...");
+
+            server.Stop();
+            server.WaitForExit();
+            server.Dispose();
 		}
 
         /// <summary>
